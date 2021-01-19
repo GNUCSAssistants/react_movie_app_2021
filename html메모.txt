@@ -1,0 +1,35 @@
+참고자료
+<html>
+서버로 데이터 전송: form tag. 디폴트는 get이다. method태그를 통해 post로 지정할 수 있다.
+post방식 :정보를 주소에 붙여 전달하는 것이 아니라, 감춰서 전달한다.
+그런데 form태그를 쓸 때 왠만하면 다 post로 보낸다.
+  action="url"
+  input submit : 기본적으로 "제출"이라고 나타남. 이름을 변경하고 싶으면 value
+  name="id or password 등등 알아서 이름붙이기"
+  value="디폴트로 보여주는 값"
+  textarea: 여러줄 입력 태그. 게시판 등
+    rows and cols
+  select: 선택태그
+    option: 선택을 묶을 때 사용
+    value: 각 옵션에서 실제로 보낼 이름(name의 하위라고 생각하라)
+  input type="radio" 단, 각각의 라디오는 p로 그룹핑 후 name값이 같아야 라디오로 동작
+    checked : 초기 디폴트값
+  reset: 적어놓은것 지워지고 초기화
+  input hidden: ui에 명시되어 있지 않지만 어떤 정보를 보내야 할 때 사용
+  lable은 for와 input의 id로 각 요소들과 연결된다. 또는 레이블로 아예 감싸버리면 된다.
+    이는 더 넓은 영역을 클릭가능하게 만든다.
+  input type="file" name="???" : 파일을 전송하고 싶을 때  
+  기본적으로 이렇게 쓴다 : <form action="url" method="post" enctype="multipart/form-data">
+
+시맨틱 태그(별다른 기능 없이 명시적인 역할만 하는 태그들)
+article	본문
+aside	광고와 같이 페이지의 내용과는 관계가 적은 내용들
+details	기본적으로 표시되지 화면에 표시되지 않는 정보들을 정의
+figure	삽화나 다이어그램과 같은 부가적인 요소를 정의
+footer	화면의 하단에 위치하는 사이트나 문서의 전체적인 정보를 정의
+header	화면의 상단에 위치하는 사이트나 문서의 전체적인 정보를 정의
+main	문서에서 가장 중심이 되는 컨텐츠를 정의
+mark	참조나 하이라이트 표시를 필요로 하는 문자를 정의
+nav	문서의 네비게이션 항목을 정의
+section	문서의 구획들을 정의 (참고)
+time	시간을 정의
