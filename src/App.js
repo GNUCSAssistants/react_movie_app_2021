@@ -1,25 +1,19 @@
 import React from 'react';
-import PropTypes from "prop-types";
 
 class App extends React.Component{
   state = {
-    counter: 0
+    isLoading: true
   };
-
-  plus = () => {
-    this.setState(current => ({ counter: current.counter + 1}));
+  componentDidMount(){
+    setTimeout(() => {
+      this.setState({ isLoading: false });
+    }, 6000);
   };
-
-  minus = () => {
-    this.setState(current => ({ counter: current.counter - 1}));
-  };
-
   render() {
-    return <div>
-      <h1>The number is: {this.state.counter}</h1>
-      <button onClick={ this.plus }>Plus</button>
-      <button onClick={ this.minus }>Minus</button>
-    </div>
+    const { isLoading } = this.state;  // 이것은, isLoading이 곧 this.state.isLoading임을 뜻한다.
+
+    // 삼항연산자. true이면 앞을 실행, false이면 뒤를 실행
+    return <div>{ isLoading ? "Loading...": "We are ready" }</div>;
   }
 }
 
