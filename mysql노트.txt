@@ -1,0 +1,80 @@
+C:\Bitnami\wampstack-7.1.28-0\mysql\bin
+여기에서 파워셸 실행
+.\mysql -uroot -p
+입력해 접속
+루트비번 111111
+
+생성 // 거의 안쓰는 명령
+CREATE DATABASE dbname;
+(세미콜론 반드시 찍을 것.)
+성공 시 qurry okay 뜰 것.
+
+삭제
+DROP DATABASE dbname; // 거의 안쓰는 명령
+
+조회
+SHOW DATABASES;
+
+사용
+USE dbname;
+
+행, 수평, row. 데이터의 갯수를 의미
+열, 수직, column
+
+검색 팁: create table in mysql cheat sheet
+이미지검색하면 잘 정리된 치트시트가 나온다.
+그러니깐 다 외우려 하지 마라.
+
+테이블생성 // 엄청 자주쓰임
+하나의 컬럼을 정의할 때 한 줄 씩.
+먼저 아이디부터 만들어보자.
+id에 숫자만 써놓도록 강제하기
+(추천검색어: mysql datatype number)
+찾아보면 INT(m), BIGINT(m) 등이 있는데 메모리를 생각해서 적절히 지정할 것.
+NOT NULL : 널값허용안함.. 반대는 NULL
+ID값은 항상 자동으로 1씩 증가시켜야(AUTO_INCREMENT)
+정리하면,
+mysql> CREATE TABLE topic(
+    ->  id INT(11) NOT NULL AUTO_INCREMENT,
+이와 같다.
+
+두번째는 title이다. VARCHAR(100)를 통해 딱 백글자만 허용하자.
+VARCHAR는 딱 255개까지만 허용.
+TEXT(size)는 6만5천개까지 허용
+DATETIME  :  날짜와 시간.
+PRIMARY KEY(id) 프라이머리키를 id로 한다. 프라이머리로 지정해두면 중복을 절대 허용 안함.
+
+만약 테이블의 구조를 보고싶다면
+DESC 테이블이름;
+이라고 치면 쫙 출력된다.
+
+row를 삽입해보자.
+mysql> INSERT INTO topic (title,description,created,author,profile) VALUES('MySQL','MySQL is ...',NOW(),'jony','etudient'); // 엄청 자주쓰이니 꼭 외울 것.
+
+읽기(SELECT) SQL에서 가장 중요한 파트이다. DB를 잘 다룬다는건 SELECT를 잘 다룬다는것이다.
+mysql> SELECT *  FROM topic; // 토픽 테이블의 모든 정보를 보여줌. 이건 엄청 자주쓰임
+mysql> SELECT id,title,created,author FROM topic; // 선택한 항목만 출력
+mysql> SELECT id,title,author FROM topic WHERE author="jony"; // WHERE은 해당 데이터와 일치하는것만 출력할때 쓰며 항상 FROM 다음에 온다.
+mysql> SELECT id,title,author FROM topic WHERE author="jony" ORDER BY id DESC; // ORDER는 정렬기준이다. WHERE다음에 온다. 디폴트는 ASC(작은숫자순)이다.
+mysql> SELECT id,title,author FROM topic WHERE author="jony" ORDER BY id DESC LIMIT 3; // 여기서 LIMIT는 딱 정해진 갯수만 출력시킬때 쓴다. DB를 쓰는 큰 이유중 하나는 데이터의 방대함인데, 함부로 모든 데이터를 출력시키면 메모리를 다 잡아먹는다. 따라서 정해진 데이터만 출력시키는 습관이 필요하다. 맨 마지막에 위치한다.
+
+수정 UPDATE 
+mysql> UPDATE 테이블이름 SET 항목이름="변경내용", 항목이름2="변경내용2" WHERE id=변경하고자하는id;
+여기서 주의할 건, 절대로 WHERE 빼먹지 마라. 빼먹으면 재앙이 발생함.
+
+삭제 DELETE
+DELETE FROM topic WHERE id = 5;
+아이디가 5인 데이터를 삭제한다. 반드시!!!! where을 빼먹지 말 것. 빼먹으면 모든 데이터가 날아감.
+
+RENAME TABLE a TO b;
+a의 이름을 b로 바꾼다.
+
+JOIN (엄청 중요. 관계형DB의 꽃)
+mysql> SELECT * FROM topic LEFT JOIN author ON topic.author_id = author.id;
+이 문장을 이해하는 게 핵심이다.
+topic테이블을 author와 레프트조인한다. 기준은 topic의 author_id와 author의 id가 일치함이다.
+ 
+더 좋은 코드는 다음과 같다
+SELECT topic.id AS topic_id,title,description,created,name,profile FROM topic LEFT JOIN author ON topic.author_id = author.id;
+*를 풀어서 일일이 써주면 필요한 값들을 얻을 수 있다.
+여기서 topic.id는 토픽의 아이디라는 뜻이며, AS topic_id라고 명시함으로서 topic_id라고 출력되게 만들었다. 

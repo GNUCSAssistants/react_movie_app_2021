@@ -1,0 +1,61 @@
+사실 비밀번호를 php코드에 적어서 접속하는 건 매우 나쁜 방식이고, root를 통해 접속하는것도 아주 나쁜 방식이나, 교육이 목적이니 그대로 진행한다.
+접속은 다음과 같다.
+$conn = mysqli_connect("localhost", "root","111111","opentutorials");
+만약 같은 컴퓨터, 같은 서버에 php가 위치해있다면 localhost를 쓴다. 그 다음은 아이디, 패스워드, 접속을 원하는 db이름.
+쿼리문을 쓸 땐?
+
+$sql = "INSERT INTO topic (
+        title,
+        description,
+        created
+    ) VALUES (
+        'MySQL',
+        'MySQL is ....',
+        NOW()
+    )";
+mysqli_query($conn,$sql);
+
+이렇게 인서트한다.
+
+디버그는 어떻게 하는가?
+에러가 발생했다싶은 줄에 다음을 추가한다.
+echo mysqli_error($conn);
+단, 디버그한 후엔 echo를 반드시 지워야한다. 보안의 위험 때문.
+
+axios에서 php로 post방식으로 전송한 후, php에서는 $_POST로 받는다. 뭐가 들어왔는지 궁금하면 var_dump($_POST); 를 쓰면 된다.
+
+$sql = "
+  INSERT INTO topic
+    (title, description, created)
+    VALUES(
+        '{$_POST['title']}',
+        '{$_POST['description']}',
+        NOW()
+    )
+";
+이렇게 써먹는다.
+
+SELECT활용
+$result = mysqli_query($conn,$sql); 
+여기서 $result에 들어가는건 객체다.
+몇 개의 데이터가 들어있는지 알고싶을땐 다음과 같이 한다.
+var_dump($result->num_rows);
+또는 print_r($result->num_rows);
+var_dump는 잡다한것까지 다 출력하고, 만약 데이터만 제대로 보고싶을땐 print_r을 사용하자.
+가져온 객체를 php에서 써먹을만한 자료형으로 바꾸고 싶을 땐, mysqli_fetch를 사용한다. 
+만약 배열로 바꾸고 싶으면 mysqli_fetch_array($result);
+이건 가장 첫번째 줄을 반환한다.
+$row = mysqli_fetch_array($result);
+print_r($row);
+각 데이터는 컬럼의 이름을 통해서 가져온다.
+예를 들면,
+echo $row['title']; // 연관배열
+근데 실행할때마다 한 줄씩 가져오고, 줄 게 없으면 NULL을 반환하니깐 반복문을 써서 다 가져오면 되겠다.
+while($row = mysqli_fetch_array($result);){
+
+}
+연관배열 만들 땐 화살표를 쓴다.
+$article = array(
+	'title' => $row['title'],
+	'description' => $row['description']
+);
